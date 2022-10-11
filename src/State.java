@@ -4,65 +4,83 @@ public class State {
     private int[] board;
     private int treasure1;
     private int treasure2;
-    private int h;
 
     public State() {
         this.board = new int[] {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
         this.treasure1 = 0;
         this.treasure2 = 0;
-        this.h = 0;
+    }
+    public State(int[] board, int treasure1, int treasure2){
+        this.board = board;
+        this.treasure1 = treasure1;
+        this.treasure2 = treasure2;
     }
 
-    public void makeMove(int index) {
-        int player = (index < 6) ? 1 : 2;
+    public State makeMove(int index) {
         int points = 0;
 
-        int numberOfBeans = this.board[index];
-        int lastIndex = (index + numberOfBeans) % 12;
-        this.board[index] = 0;
-        for (int i = (index + 1) % 12; i <= lastIndex; i++) {
-            this.board[i] += 1;
+        int[] boardCopy = Arrays.copyOf(this.board, 12);
+        int treasure1Copy = this.treasure1;
+        int treasure2Copy = this.treasure2;
 
-            if (i == lastIndex) {
-                if (this.board[i] == 2 || this.board[i] == 4 || this.board[i] == 6) {
-                    points += this.board[i];
-                    this.board[i] = 0;
+        int numberOfBeans = boardCopy[index];
+        int lastIndex = 0;
+        boardCopy[index] = 0;
+        for (int i = 1; i <= numberOfBeans; i++) {
+            int currentIndex = (i + index) % 12;
+            boardCopy[currentIndex] += 1;
 
-                    while (true) {
-                        if (this.board[(i - 1) % 12] == 2 || this.board[(i - 1) % 12] == 4 || this.board[(i - 1) % 12] == 6) {
-                            points += this.board[(i - 1) % 12];
-                            this.board[(i - 1) % 12] = 0;
-                        } else { 
-                            break;
-                        }
-                    }
-                }
+            if (i == numberOfBeans) {
+                lastIndex = currentIndex;
             }
         }
 
-        if (player == 1) {
-            this.treasure1 = points;
-        } else {
-            this.treasure2 = points;
+        int i = lastIndex;
+        while (true) {
+            if (boardCopy[i % 12] == 2 || boardCopy[i % 12] == 4 || boardCopy[i % 12] == 6) {
+                points += boardCopy[i % 12];
+                boardCopy[i % 12] = 0;
+
+                if (i == 0) {
+                    i = 11;
+                } else {
+                    i--;
+                }
+            } else {
+                break;
+            }
         }
 
-        this.h = this.treasure1 - this.treasure2;
+        if (index < 6) {
+            treasure1Copy = points;
+        } else {
+            treasure2Copy = points;
+        }
+
+        return new State(boardCopy, treasure1Copy, treasure2Copy);
     }
 
-    public void printState() {
+    public int getUtility() {
+        return this.treasure2 - this.treasure1;
+    }
+
+    @Override
+    public String toString() {
         String str = "";
 
-        for (int i = 0; i < this.board.length; i++) {
-            if (i == 6) {
-                str += "\n";
-            }
+        for (int i = this.board.length - 1; i >= 6; i--) {
+            str += (i + 1) + ": " + this.board[i] + "  ";
+        }
+        str += "\n";
+        for (int i = 0; i < 6; i++) {
             str += (i + 1) + ": " + this.board[i] + "  ";
         }
         str += "\n";
         str += "Schatzkammer 1: " + this.treasure1 + "\n";
-        str += "Schatzkammer 2: " + this.treasure2;
+        str += "Schatzkammer 2: " + this.treasure2 + "\n";
+        str += "Heuristik: " + this.getUtility() + "\n";
 
-        System.out.println(str);
+        return str;
     }
 
     @Override
@@ -88,27 +106,5 @@ public class State {
 
     public int getTreasure2() {
         return this.treasure2;
-    }
-
-    public static void main(String[] args) {
-        State s = new State();
-
-        s.makeMove(0);
-        s.printState();
-
-        s.makeMove(1);
-        s.printState();
-
-        s.makeMove(2);
-        s.printState();
-
-        s.makeMove(3);
-        s.printState();
-
-        s.makeMove(11);
-        s.printState();
-
-        s.makeMove(0);
-        s.printState();
     }
 }
