@@ -13,7 +13,7 @@ public class State {
         this.h = 0;
     }
 
-    public void move(int index) {
+    public void makeMove(int index) {
         int player = (index < 6) ? 1 : 2;
         int points = 0;
 
@@ -42,11 +42,11 @@ public class State {
 
         if (player == 1) {
             this.treasure1 = points;
-            this.h = this.treasure1 - this.treasure2;
         } else {
             this.treasure2 = points;
-            this.h = this.treasure2 - this.treasure1;
         }
+
+        this.h = this.treasure1 - this.treasure2;
     }
 
     public void printState() {
@@ -93,22 +93,22 @@ public class State {
     public static void main(String[] args) {
         State s = new State();
 
-        s.move(0);
+        s.makeMove(0);
         s.printState();
 
-        s.move(1);
+        s.makeMove(1);
         s.printState();
 
-        s.move(2);
+        s.makeMove(2);
         s.printState();
 
-        s.move(3);
+        s.makeMove(3);
         s.printState();
 
-        s.move(11);
+        s.makeMove(11);
         s.printState();
 
-        s.move(0);
+        s.makeMove(0);
         s.printState();
     }
 }
