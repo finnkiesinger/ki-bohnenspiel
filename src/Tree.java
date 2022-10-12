@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
-public class StateTree {
+public class Tree {
     // the current state of the game is used as the root of the tree
     private Node root;
 
-    public StateTree(State currentState) {
+    public Tree(State currentState) {
         this.root = new Node();
         this.root.setState(currentState);
         this.root.setChildren(new ArrayList<>());
@@ -34,13 +34,13 @@ public class StateTree {
         }
     }
 
-        private void expand2(StateTree tree){
+        private void expand2(Tree tree){
             int childCounter = this.root.getChildren().size();
             if(childCounter == 0){
                 System.out.println("mach nix");
             }else{
                 for(int i = 0; i< childCounter; i++){
-                    StateTree childTree = new StateTree(this.getRoot().getParent().getState());
+                    Tree childTree = new Tree(this.getRoot().getParent().getState());
                     expand2(childTree);
                 }
             }
@@ -56,7 +56,7 @@ public class StateTree {
 
     public static void main(String[] args) {
         State s = new State();
-        StateTree t = new StateTree(s);
+        Tree t = new Tree(s);
         t.expand();
         for (Node child : t.getRoot().getChildren()) {
             System.out.println(child);
