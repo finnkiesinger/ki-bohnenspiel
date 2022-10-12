@@ -6,7 +6,7 @@ import java.net.URI;
 public class Client {
     // static String server = "http://127.0.0.1:5000";
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "random-AI";
+    static String name = "Meister Propper";
 
     static int p1 = 0;
     static int p2 = 0;
@@ -14,9 +14,9 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         // System.out.println(load(server));
-        createGame();
+//         createGame();
         // openGames();
-        // joinGame("0");
+         joinGame("196");
     }
 
 
@@ -88,12 +88,11 @@ public class Client {
                     System.out.println(printBoard(board) + "\n");
                 }
                 // calculate fieldID
-                int selectField;
-                // System.out.println("Finde Zahl: ");
-                do {
-                    selectField = (int) (Math.random() * 6) + offset;
-                    // System.out.println("\t-> " + selectField );
-                } while (board[selectField] == 0);
+                // noch anpassen !!! TODO
+                Minimax m = new Minimax();
+                int selectField = m.search(board, offset, p1, p2);
+
+                System.out.println("!!! " + selectField);
 
                 board = updateBoard(board, selectField);
                 System.out.println("Wï¿½hle Feld: " + (selectField + 1) + " /\t" + p1 + " - " + p2);

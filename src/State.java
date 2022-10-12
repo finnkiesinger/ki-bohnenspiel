@@ -4,28 +4,25 @@ import java.util.List;
 
 public class State {
     private int[] board;
-    private int player1Treasure;
-    private int player2Treasure;
-    private int utility;
+    private int p1;
+    private int p2;
 
     public State() {
         this.board = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
-        this.player1Treasure = 0;
-        this.player2Treasure = 0;
-        this.utility = 0;
+        this.p1 = 0;
+        this.p2 = 0;
     }
 
-    public State(int[] board, int player1Treasure, int player2Treasure, int utility) {
+    public State(int[] board, int p1, int p2) {
         this.board = board;
-        this.player1Treasure = player1Treasure;
-        this.player2Treasure = player2Treasure;
-        this.utility = utility;
+        this.p1 = p1;
+        this.p2 = p2;
     }
 
     public State makeMove(int field) {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
-        int player1TreasureCopy = this.player1Treasure;
-        int player2TreasureCopy = this.player2Treasure;
+        int p1Copy = this.p1;
+        int p2Copy = this.p2;
 
         int points = 0;
         int numberOfBeans = boardCopy[field];
@@ -54,30 +51,40 @@ public class State {
         }
 
         if (field < 6) {
-            player1TreasureCopy = points;
+            p1Copy = points;
         } else {
-            player2TreasureCopy = points;
+            p2Copy = points;
         }
 
         // Reihenfolge noch anpassen, ggf. player als Attribut übergeben
-        return new State(boardCopy, player1TreasureCopy, player2TreasureCopy, player1TreasureCopy - player2TreasureCopy);
+        return new State(boardCopy, p1Copy, p2Copy);
     }
 
-    public List<State> getPossibleStates(int player) {
-        List<State> possibleStates = new ArrayList<>();
+    public List<Integer> getPossibleMoves(int offset) {
+        List<Integer> possibleMoves = new ArrayList<>();
 
-        if (player == 1) {
-            for (int i = 0; i < 6; i++) {
-                possibleStates.add(this.makeMove(i));
-            }
-        } else {
-            for (int i = 6; i < 12; i++) {
-                possibleStates.add(this.makeMove(i));
+        for (int i = 0; i < 6; i++) {
+            if (this.board[i + offset] != 0) {
+                possibleMoves.add(i + offset);
             }
         }
 
-        return possibleStates;
+        return possibleMoves;
     }
+
+    public boolean isMovePossible(int offset) {
+        for (int i = 0; i < 6; i++) {
+            if (this.board[i + offset] != 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int calculateUtility(int offset) {
+        return (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
+    }
+
 
     @Override
     public String toString() {
@@ -91,9 +98,8 @@ public class State {
             str += (i + 1) + ": " + this.board[i] + "  ";
         }
         str += "\n";
-        str += "Schatzkammer 1: " + this.player1Treasure + "\n";
-        str += "Schatzkammer 2: " + this.player2Treasure + "\n";
-        str += "Heuristik: " + this.utility + "\n";
+        str += "Treasure 1: " + this.p1 + "\n";
+        str += "Treasure 2: " + this.p2 + "\n";
 
         return str;
     }
@@ -101,14 +107,14 @@ public class State {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof State s) {
-            return Arrays.equals(this.board, s.board) && this.player1Treasure == s.player1Treasure && this.player2Treasure == s.player2Treasure;
+            return Arrays.equals(this.board, s.board) && this.p1 == s.p1 && this.p2 == s.p2;
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(this.board) + this.player1Treasure * 2 + this.player2Treasure * 3;
+        return Arrays.hashCode(this.board) + this.p1 * 2 + this.p2 * 3;
     }
 
     public int[] getBoard() {
@@ -119,36 +125,19 @@ public class State {
         this.board = board;
     }
 
-    public int getPlayer1Treasure() {
-        return player1Treasure;
+    public int getP1() {
+        return p1;
     }
 
-    public void setPlayer1Treasure(int player1Treasure) {
-        this.player1Treasure = player1Treasure;
+    public void setP1(int p1) {
+        this.p1 = p1;
     }
 
-    public int getPlayer2Treasure() {
-        return player2Treasure;
+    public int getP2() {
+        return p2;
     }
 
-    public void setPlayer2Treasure(int player2Treasure) {
-        this.player2Treasure = player2Treasure;
-    }
-
-    public int getUtility() {
-        return utility;
-    }
-
-    public void setUtility(int utility) {
-        this.utility = utility;
-    }
-
-    public static void main(String[] args) {
-        State rootState = new State();
-        List<State> firstPossibleStates = rootState.getPossibleStates(1);
-
-        for (State state : firstPossibleStates) {
-            System.out.println(state);
-        }
+    public void setP2(int p2) {
+        this.p2 = p2;
     }
 }
