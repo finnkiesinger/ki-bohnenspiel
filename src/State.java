@@ -1,19 +1,25 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class State {
     private int[] board;
     private int player1Treasure;
     private int player2Treasure;
+    private int utility;
 
     public State() {
-        this.board = new int[] {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+        this.board = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
         this.player1Treasure = 0;
         this.player2Treasure = 0;
+        this.utility = 0;
     }
-    public State(int[] board, int player1Treasure, int player2Treasure){
+
+    public State(int[] board, int player1Treasure, int player2Treasure, int utility) {
         this.board = board;
         this.player1Treasure = player1Treasure;
         this.player2Treasure = player2Treasure;
+        this.utility = utility;
     }
 
     public State makeMove(int field) {
@@ -53,11 +59,24 @@ public class State {
             player2TreasureCopy = points;
         }
 
-        return new State(boardCopy, player1TreasureCopy, player2TreasureCopy);
+        // Reihenfolge noch anpassen, ggf. player als Attribut übergeben
+        return new State(boardCopy, player1TreasureCopy, player2TreasureCopy, player1TreasureCopy - player2TreasureCopy);
     }
 
-    public int getUtility() {
-        return this.player2Treasure - this.player1Treasure;
+    public List<State> getPossibleStates(int player) {
+        List<State> possibleStates = new ArrayList<>();
+
+        if (player == 1) {
+            for (int i = 0; i < 6; i++) {
+                possibleStates.add(this.makeMove(i));
+            }
+        } else {
+            for (int i = 6; i < 12; i++) {
+                possibleStates.add(this.makeMove(i));
+            }
+        }
+
+        return possibleStates;
     }
 
     @Override
@@ -74,7 +93,7 @@ public class State {
         str += "\n";
         str += "Schatzkammer 1: " + this.player1Treasure + "\n";
         str += "Schatzkammer 2: " + this.player2Treasure + "\n";
-        str += "Heuristik: " + this.getUtility() + "\n";
+        str += "Heuristik: " + this.utility + "\n";
 
         return str;
     }
@@ -93,14 +112,43 @@ public class State {
     }
 
     public int[] getBoard() {
-        return this.board;
+        return board;
+    }
+
+    public void setBoard(int[] board) {
+        this.board = board;
     }
 
     public int getPlayer1Treasure() {
-        return this.player1Treasure;
+        return player1Treasure;
+    }
+
+    public void setPlayer1Treasure(int player1Treasure) {
+        this.player1Treasure = player1Treasure;
     }
 
     public int getPlayer2Treasure() {
-        return this.player2Treasure;
+        return player2Treasure;
+    }
+
+    public void setPlayer2Treasure(int player2Treasure) {
+        this.player2Treasure = player2Treasure;
+    }
+
+    public int getUtility() {
+        return utility;
+    }
+
+    public void setUtility(int utility) {
+        this.utility = utility;
+    }
+
+    public static void main(String[] args) {
+        State rootState = new State();
+        List<State> firstPossibleStates = rootState.getPossibleStates(1);
+
+        for (State state : firstPossibleStates) {
+            System.out.println(state);
+        }
     }
 }
