@@ -8,7 +8,7 @@ public class State {
     private int p2;
 
     public State() {
-        this.board = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+        this.board = new int[] {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
         this.p1 = 0;
         this.p2 = 0;
     }

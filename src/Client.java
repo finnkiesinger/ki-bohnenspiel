@@ -3,9 +3,8 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 public class Client {
-    // static String server = "http://127.0.0.1:5000";
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "Alpha-KI-dneyBohne";
+    static String name = "KI-dney-Bohne";
     static int p1 = 0;
     static int p2 = 0;
 
@@ -13,7 +12,7 @@ public class Client {
         // System.out.println(load(server));
         // createGame();
         // openGames();
-        joinGame("293");
+        joinGame("297");
     }
 
     static void createGame() throws Exception {

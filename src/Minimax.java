@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Minimax {
-    private final int maxDepth = 12;
+    private final int maxDepth = 14;
     private int selectedField = -1;
     private int initialOffset;
     private long initialTime;
@@ -13,7 +13,6 @@ public class Minimax {
 
         int utility = maxValue(state, offset, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-        // TODO ?
         return this.selectedField;
     }
 
