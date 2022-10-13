@@ -2,41 +2,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * This class represents a state in the "Bohnenspiel"
- */
+
+// Represents a single state in the game.
 public class State {
-    /**
-     * Represents the 12 pits, each containing a specific number of beans.
-     * indeces 0-5 are player 1's pits, indices 6-11 are player 2's pits.
+    /*
+     * Represents the 12 pits on the board, each containing a specific number of beans.
+     * The first 6 pits belong to player 1, the other 6 to player 2.
      */
     private int[] board;
-    /**
-     * The number of beans in player 1's treasure trove.
-     */
+
+    // The number of beans in player 1's treasure trove.
     private int p1;
-    /**
-     * The number of beans in player 2's treasure trove.
-     */
+
+    // The number of beans in player 2's treasure trove.
     private int p2;
 
-    public State() {
-        this.board = new int[] {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
-        this.p1 = 0;
-        this.p2 = 0;
-    }
+    // The heuristic value for this state.
+    private int heuristicScore;
 
-    public State(int[] board, int p1, int p2) {
+    public State(int[] board, int p1, int p2, int offset) {
         this.board = board;
         this.p1 = p1;
         this.p2 = p2;
+        this.heuristicScore = (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
 
-    /**
-     * @param field The index of the field to remove the beans from.
-     * @return The state resulting from the distribution of the beans on the board.
-     */
-    public State makeMove(int field) {
+    // Returns a new state which is generated based on the field to remove and distribute all beans from.
+    public State getNextState(int field, int offset) {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
         int p2Copy = this.p2;
@@ -49,13 +41,13 @@ public class State {
         }
 
         int points = 0;
-        int i = (field + numberOfBeans) % 12;
+        int currentField = (field + numberOfBeans) % 12;
 
         while (true) {
-            if (boardCopy[i % 12] == 2 || boardCopy[i % 12] == 4 || boardCopy[i % 12] == 6) {
-                points += boardCopy[i % 12];
-                boardCopy[i % 12] = 0;
-                i = (i == 0) ? 11 : i - 1;
+            if (boardCopy[currentField] == 2 || boardCopy[currentField] == 4 || boardCopy[currentField] == 6) {
+                points += boardCopy[currentField];
+                boardCopy[currentField] = 0;
+                currentField = (currentField == 0) ? 11 : --currentField;
             } else {
                 break;
             }
@@ -67,14 +59,11 @@ public class State {
             p2Copy += points;
         }
 
-        return new State(boardCopy, p1Copy, p2Copy);
+        return new State(boardCopy, p1Copy, p2Copy, offset);
     }
 
-    /**
-     * @param offset Offset 0 = player 1, offset 6 = player 2.
-     * @return True if the specified player still has beans to perform a move.
-     */
-    public boolean isMovePossible(int offset) {
+    // Returns true if the player with specified offset has at least one more possible move.
+    public boolean hasPossibleMove(int offset) {
         for (int i = 0; i < 6; i++) {
             if (this.board[i + offset] != 0) {
                 return true;
@@ -84,9 +73,9 @@ public class State {
         return false;
     }
 
-    /**
-     * @param offset Offset 0 = player 1, offset 6 = player 2.
-     * @return All the moves that the specified player can perform, so the corresponding indices.
+    /*
+     * Returns all possible moves of the player with the specified offset,
+     * meaning the indices of all fields where beans can still be removed from.
      */
     public List<Integer> getPossibleMoves(int offset) {
         List<Integer> possibleMoves = new ArrayList<>();
@@ -100,14 +89,6 @@ public class State {
         return possibleMoves;
     }
 
-    /**
-     * @param offset Offset 0 = player 1, offset 6 = player 2.
-     * @return The utility of the state based on the specified player.
-     */
-    public int calculateUtility(int offset) {
-        return (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
-    }
-
     @Override
     public String toString() {
         String str = "";
@@ -115,13 +96,17 @@ public class State {
         for (int i = this.board.length - 1; i >= 6; i--) {
             str += (i + 1) + ": " + this.board[i] + "  ";
         }
+
         str += "\n";
+
         for (int i = 0; i < 6; i++) {
             str += (i + 1) + ": " + this.board[i] + "  ";
         }
+
         str += "\n";
-        str += "Treasure 1: " + this.p1 + "\n";
-        str += "Treasure 2: " + this.p2 + "\n";
+        str += "Player 1: " + this.p1 + "\n";
+        str += "Player 2: " + this.p2 + "\n";
+        str += "Heuristic Score: " + this.heuristicScore + "\n";
 
         return str;
     }
@@ -161,5 +146,13 @@ public class State {
 
     public void setP2(int p2) {
         this.p2 = p2;
+    }
+
+    public int getHeuristicScore() {
+        return heuristicScore;
+    }
+
+    public void setHeuristicScore(int heuristicScore) {
+        this.heuristicScore = heuristicScore;
     }
 }

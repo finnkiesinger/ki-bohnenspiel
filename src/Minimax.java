@@ -1,49 +1,47 @@
 import java.util.List;
 
-/**
- * Implements the Mimimax algorithm with alpha-beta pruning.
- */
+// Implements the Minimax algorithm with alpha-beta pruning.
 public class Minimax {
-    /**
-     * The maximum depth of the constructed game tree.
-     */
-    private final int maxDepth = 13;
-    /**
-     * The index of the optimal move the algorithm computes.
-     */
+    // The maximum depth of the game tree to be constructed.
+    private final int maxDepth = 12;
+
+    private int maxOffset;
+    private int minOffset;
+
+    // The index of the optimal move the algorithm computes.
     private int selectedField = -1;
-    /**
-     * The first specified offset which indicates the player.
-     * Offset 0 = player 1, offset 6 = player 2.
-     */
-    private int initialOffset;
-    /**
-     * The initial system time when the algorithm is called for the first time.
-     */
+
+    // The initial system time when the algorithm is called for the first time.
     private long initialTime;
 
     public int search(int[] board, int offset, int p1, int p2, long initialTime) {
-        this.initialOffset = offset;
+        this.maxOffset = offset;
+        this.minOffset = (offset == 0) ? 6 : 0;
         this.initialTime = initialTime;
 
-        State state = new State(board, p1, p2);
+        State state = new State(board, p1, p2, maxOffset);
 
-        maxValue(state, offset, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        System.out.println(state);
+
+        maxValue(state, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
         return this.selectedField;
     }
 
-    public int maxValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 1900 || depth == 0 || !state.isMovePossible(offset)) {
-            return state.calculateUtility(initialOffset);
+    public int maxValue(State state, int depth, int alpha, int beta) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(maxOffset)) {
+            return state.getHeuristicScore();
         }
 
         int max = alpha;
-        List<Integer> possibleMoves = state.getPossibleMoves(offset);
+        List<Integer> possibleMoves = state.getPossibleMoves(maxOffset);
 
         for(int i = 0; i < possibleMoves.size(); i++) {
-            State s = state.makeMove(possibleMoves.get(i));
-            int value = minValue(s, (offset == 0) ? 6 : 0,depth - 1, max, beta);
+            State s = state.getNextState(possibleMoves.get(i), maxOffset);
+
+            System.out.println(s);
+
+            int value = minValue(s,depth - 1, max, beta);
 
             if (value > max) {
                 max = value;
@@ -61,17 +59,20 @@ public class Minimax {
         return max;
     }
 
-    public int minValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 1900 || depth == 0 || !state.isMovePossible(offset)) {
-            return state.calculateUtility(initialOffset);
+    public int minValue(State state, int depth, int alpha, int beta) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(minOffset)) {
+            return state.getHeuristicScore();
         }
 
         int min = beta;
-        List<Integer> possibleMoves = state.getPossibleMoves(offset);
+        List<Integer> possibleMoves = state.getPossibleMoves(minOffset);
 
         for(int i = 0; i < possibleMoves.size(); i++) {
-            State s = state.makeMove(possibleMoves.get(i));
-            int value = maxValue(s, (offset == 0) ? 6 : 0,depth - 1, alpha, min);
+            State s = state.getNextState(possibleMoves.get(i), maxOffset);
+
+            System.out.println(s);
+
+            int value = maxValue(s, depth - 1, alpha, min);
 
             if (value < min) {
                 min = value;
