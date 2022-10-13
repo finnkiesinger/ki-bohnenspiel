@@ -1,17 +1,42 @@
 import java.util.List;
 
+/**
+ * Implements the Mimimax algorithm with alpha-beta pruning.
+ */
 public class Minimax {
+    /**
+     * The maximum depth of the constructed game tree.
+     */
     private final int maxDepth = 14;
+    /**
+     * The index of the optimal move the algorithm computes.
+     */
     private int selectedField = -1;
+    /**
+     * The first specified offset which indicates the player.
+     * Offset 0 = player 1, offset 6 = player 2.
+     */
     private int initialOffset;
+    /**
+     * The initial system time when the algorithm is called for the first time.
+     */
     private long initialTime;
+
+    /**
+     * @param board
+     * @param offset
+     * @param p1
+     * @param p2
+     * @param initialTime
+     * @return
+     */
     public int search(int[] board, int offset, int p1, int p2, long initialTime) {
         this.initialOffset = offset;
         this.initialTime = initialTime;
 
         State state = new State(board, p1, p2);
 
-        int utility = maxValue(state, offset, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        maxValue(state, offset, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
         return this.selectedField;
     }

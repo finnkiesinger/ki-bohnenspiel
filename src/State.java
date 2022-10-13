@@ -2,9 +2,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class represents a state in the "Bohnenspiel"
+ */
 public class State {
+    /**
+     * Represents the 12 pits, each containing a specific number of beans.
+     * indeces 0-5 are player 1's pits, indices 6-11 are player 2's pits.
+     */
     private int[] board;
+    /**
+     * The number of beans in player 1's treasure trove.
+     */
     private int p1;
+    /**
+     * The number of beans in player 2's treasure trove.
+     */
     private int p2;
 
     public State() {
@@ -19,6 +32,10 @@ public class State {
         this.p2 = p2;
     }
 
+    /**
+     * @param field The index of the field to remove the beans from.
+     * @return The state resulting from the distribution of the beans on the board.
+     */
     public State makeMove(int field) {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
@@ -53,6 +70,10 @@ public class State {
         return new State(boardCopy, p1Copy, p2Copy);
     }
 
+    /**
+     * @param offset Offset 0 = player 1, offset 6 = player 2.
+     * @return True if the specified player still has beans to perform a move.
+     */
     public boolean isMovePossible(int offset) {
         for (int i = 0; i < 6; i++) {
             if (this.board[i + offset] != 0) {
@@ -63,6 +84,10 @@ public class State {
         return false;
     }
 
+    /**
+     * @param offset Offset 0 = player 1, offset 6 = player 2.
+     * @return All the moves that the specified player can perform, so the corresponding indices.
+     */
     public List<Integer> getPossibleMoves(int offset) {
         List<Integer> possibleMoves = new ArrayList<>();
 
@@ -75,6 +100,10 @@ public class State {
         return possibleMoves;
     }
 
+    /**
+     * @param offset Offset 0 = player 1, offset 6 = player 2.
+     * @return The utility of the state based on the specified player.
+     */
     public int calculateUtility(int offset) {
         return (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
