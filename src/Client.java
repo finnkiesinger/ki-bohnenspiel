@@ -5,7 +5,7 @@ import java.net.URI;
 public class Client {
     // static String server = "http://127.0.0.1:5000";
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "KI-dneyBohne";
+    static String name = "Alpha-KI-dneyBohne";
     static int p1 = 0;
     static int p2 = 0;
 
@@ -13,7 +13,7 @@ public class Client {
         // System.out.println(load(server));
         // createGame();
         // openGames();
-        joinGame("286");
+        joinGame("293");
     }
 
     static void createGame() throws Exception {
