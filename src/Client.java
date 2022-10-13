@@ -2,23 +2,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
-
 public class Client {
     // static String server = "http://127.0.0.1:5000";
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "Meister Propper";
-
+    static String name = "AI1";
     static int p1 = 0;
     static int p2 = 0;
 
-
     public static void main(String[] args) throws Exception {
         // System.out.println(load(server));
-//         createGame();
+        // createGame();
         // openGames();
-         joinGame("196");
+        joinGame("261");
     }
-
 
     static void createGame() throws Exception {
         String url = server + "/api/creategame/" + name;
@@ -40,7 +36,6 @@ public class Client {
         play(gameID, 0);
     }
 
-
     static void openGames() throws Exception {
         String url = server + "/api/opengames";
         String[] opengames = load(url).split(";");
@@ -48,7 +43,6 @@ public class Client {
             System.out.println(opengames[i]);
         }
     }
-
 
     static void joinGame(String gameID) throws Exception {
         String url = server + "/api/joingame/" + gameID + "/" + name;
@@ -60,7 +54,6 @@ public class Client {
             System.out.println("error (join game)");
         }
     }
-
 
     static void play(String gameID, int offset) throws Exception {
         String checkURL = server + "/api/check/" + gameID + "/" + name;
@@ -90,7 +83,7 @@ public class Client {
                 // calculate fieldID
                 // noch anpassen !!! TODO
                 Minimax m = new Minimax();
-                int selectField = m.search(board, offset, p1, p2);
+                int selectField = m.search(board, offset, p1, p2, System.currentTimeMillis());
 
                 System.out.println("!!! " + selectField);
 
@@ -107,10 +100,8 @@ public class Client {
             } else {
                 System.out.println("- " + moveState + "\t\t" + load(statesMsgURL));
             }
-
         }
     }
-
 
     static int[] updateBoard(int[] board, int field) {
         int startField = field;
@@ -137,7 +128,6 @@ public class Client {
         return board;
     }
 
-
     static String printBoard(int[] board) {
         String s = "";
         for (int i = 11; i >= 6; i--) {
@@ -160,12 +150,10 @@ public class Client {
         return s;
     }
 
-
     static void move(String gameID, int fieldID) throws Exception {
         String url = server + "/api/move/" + gameID + "/" + name + "/" + fieldID;
         System.out.println(load(url));
     }
-
 
     static String load(String url) throws Exception {
         URI uri = new URI(url.replace(" ", ""));
@@ -179,4 +167,3 @@ public class Client {
         return (sb.toString());
     }
 }
-

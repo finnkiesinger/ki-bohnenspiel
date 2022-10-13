@@ -8,7 +8,7 @@ public class State {
     private int p2;
 
     public State() {
-        this.board = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+        this.board = new int[] {6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
         this.p1 = 0;
         this.p2 = 0;
     }
@@ -19,6 +19,7 @@ public class State {
         this.p2 = p2;
     }
 
+    // TODO beachten, dass Bohnen am Ende verteilt werden
     public State makeMove(int field) {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
@@ -40,20 +41,16 @@ public class State {
                 points += boardCopy[i % 12];
                 boardCopy[i % 12] = 0;
 
-                if (i == 0) {
-                    i = 11;
-                } else {
-                    i--;
-                }
+                i = (i == 0) ? 11 : i - 1;
             } else {
                 break;
             }
         }
 
         if (field < 6) {
-            p1Copy = points;
+            p1Copy += points;
         } else {
-            p2Copy = points;
+            p2Copy += points;
         }
 
         // Reihenfolge noch anpassen, ggf. player als Attribut übergeben
