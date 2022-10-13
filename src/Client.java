@@ -4,7 +4,7 @@ import java.net.URI;
 
 public class Client {
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "KI-dney-Bohne";
+    static String name = "Beanie";
     static int p1 = 0;
     static int p2 = 0;
 
@@ -12,7 +12,7 @@ public class Client {
         // System.out.println(load(server));
 //         createGame();
         // openGames();
-        joinGame("327");
+        joinGame("349");
     }
 
     static void createGame() throws Exception {
@@ -76,7 +76,7 @@ public class Client {
                 if (moveState != -1) {
                     int selectedField = moveState - 1;
                     board = updateBoard(board, selectedField);
-                    System.out.println("Gegner wï¿½hlte: " + moveState + " /\t" + p1 + " - " + p2);
+                    System.out.println("Gegner wählte: " + moveState + " /\t" + p1 + " - " + p2);
                     System.out.println(printBoard(board) + "\n");
                 }
                 // calculate fieldID
@@ -84,7 +84,7 @@ public class Client {
                 int selectField = m.search(board, offset, p1, p2, System.currentTimeMillis());
 
                 board = updateBoard(board, selectField);
-                System.out.println("Wï¿½hle Feld: " + (selectField + 1) + " /\t" + p1 + " - " + p2);
+                System.out.println("Wähle Feld: " + (selectField + 1) + " /\t" + p1 + " - " + p2);
                 System.out.println(printBoard(board) + "\n\n");
 
                 move(gameID, selectField + 1);

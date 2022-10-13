@@ -22,14 +22,6 @@ public class Minimax {
      */
     private long initialTime;
 
-    /**
-     * @param board
-     * @param offset
-     * @param p1
-     * @param p2
-     * @param initialTime
-     * @return
-     */
     public int search(int[] board, int offset, int p1, int p2, long initialTime) {
         this.initialOffset = offset;
         this.initialTime = initialTime;
@@ -42,7 +34,7 @@ public class Minimax {
     }
 
     public int maxValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.isMovePossible(offset)) {
+        if (System.currentTimeMillis() - initialTime >= 2500 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 
@@ -70,7 +62,7 @@ public class Minimax {
     }
 
     public int minValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.isMovePossible(offset)) {
+        if (System.currentTimeMillis() - initialTime >= 2500 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 
