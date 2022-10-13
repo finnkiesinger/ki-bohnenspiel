@@ -7,7 +7,7 @@ public class Minimax {
     /**
      * The maximum depth of the constructed game tree.
      */
-    private final int maxDepth = 14;
+    private final int maxDepth = 13;
     /**
      * The index of the optimal move the algorithm computes.
      */
@@ -34,7 +34,7 @@ public class Minimax {
     }
 
     public int maxValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2500 || depth == 0 || !state.isMovePossible(offset)) {
+        if (System.currentTimeMillis() - initialTime >= 1900 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 
@@ -62,7 +62,7 @@ public class Minimax {
     }
 
     public int minValue(State state, int offset, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2500 || depth == 0 || !state.isMovePossible(offset)) {
+        if (System.currentTimeMillis() - initialTime >= 1900 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 

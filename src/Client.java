@@ -10,9 +10,9 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         // System.out.println(load(server));
-//         createGame();
+         createGame();
         // openGames();
-        joinGame("349");
+//        joinGame("372");
     }
 
     static void createGame() throws Exception {
