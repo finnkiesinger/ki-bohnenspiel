@@ -1,7 +1,7 @@
 import java.util.List;
 
 public class Minimax {
-    private final int maxDepth = 8;
+    private final int maxDepth = 10;
     private int selectedField = -1;
     private int initialOffset;
     private long initialTime;
@@ -17,7 +17,7 @@ public class Minimax {
     }
 
     public int maxValue(State state, int offset, int depth) {
-        if (depth == 0 || !state.isMovePossible(offset) || System.currentTimeMillis() - initialTime >= 2950) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 
@@ -40,7 +40,7 @@ public class Minimax {
     }
 
     public int minValue(State state, int offset, int depth) {
-        if (depth == 0 || !state.isMovePossible(offset) || System.currentTimeMillis() - initialTime >= 2950) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.isMovePossible(offset)) {
             return state.calculateUtility(initialOffset);
         }
 

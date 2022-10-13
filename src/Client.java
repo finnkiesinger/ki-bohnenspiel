@@ -5,7 +5,7 @@ import java.net.URI;
 public class Client {
     // static String server = "http://127.0.0.1:5000";
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "AI1";
+    static String name = "KI-dneyBohne";
     static int p1 = 0;
     static int p2 = 0;
 
@@ -13,7 +13,7 @@ public class Client {
         // System.out.println(load(server));
         // createGame();
         // openGames();
-        joinGame("261");
+        joinGame("286");
     }
 
     static void createGame() throws Exception {
@@ -81,11 +81,8 @@ public class Client {
                     System.out.println(printBoard(board) + "\n");
                 }
                 // calculate fieldID
-                // noch anpassen !!! TODO
                 Minimax m = new Minimax();
                 int selectField = m.search(board, offset, p1, p2, System.currentTimeMillis());
-
-                System.out.println("!!! " + selectField);
 
                 board = updateBoard(board, selectField);
                 System.out.println("Wï¿½hle Feld: " + (selectField + 1) + " /\t" + p1 + " - " + p2);
