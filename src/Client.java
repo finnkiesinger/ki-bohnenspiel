@@ -9,10 +9,8 @@ public class Client {
     static int p2 = 0;
 
     public static void main(String[] args) throws Exception {
-        // System.out.println(load(server));
-         createGame();
-        // openGames();
-//        joinGame("439");
+        createGame();
+//        joinGame("477");
     }
 
     static void createGame() throws Exception {
@@ -24,7 +22,7 @@ public class Client {
         while (true) {
             Thread.sleep(3000);
             String state = load(url);
-            System.out.print("." + " (" + state + ")");
+//            System.out.print("." + " (" + state + ")");
             if (state.equals("0") || state.equals("-1")) {
                 break;
             } else if (state.equals("-2")) {

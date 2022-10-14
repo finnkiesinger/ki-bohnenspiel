@@ -20,15 +20,14 @@ public class State {
     // The heuristic value for this state.
     private int heuristicScore;
 
-    public State(int[] board, int p1, int p2, int offset) {
+    public State(int[] board, int p1, int p2) {
         this.board = board;
         this.p1 = p1;
         this.p2 = p2;
-        this.heuristicScore = (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
 
-    // Returns a new state which is generated based on the field to remove and distribute all beans from.
-    public State getNextState(int field, int offset) {
+    // Returns a new state which is generated based on the index of the field to remove and distribute all beans from.
+    public State getNextState(int field) {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
         int p2Copy = this.p2;
@@ -43,14 +42,12 @@ public class State {
         int points = 0;
         int currentField = (field + numberOfBeans) % 12;
 
-        while (true) {
-            if (boardCopy[currentField] == 2 || boardCopy[currentField] == 4 || boardCopy[currentField] == 6) {
+        if (boardCopy[currentField] == 2 || boardCopy[currentField] == 4 || boardCopy[currentField] == 6) {
+            do {
                 points += boardCopy[currentField];
                 boardCopy[currentField] = 0;
                 currentField = (currentField == 0) ? 11 : --currentField;
-            } else {
-                break;
-            }
+            } while (boardCopy[currentField] == 2 || boardCopy[currentField] == 4 || boardCopy[currentField] == 6);
         }
 
         if (field < 6) {
@@ -59,7 +56,7 @@ public class State {
             p2Copy += points;
         }
 
-        return new State(boardCopy, p1Copy, p2Copy, offset);
+        return new State(boardCopy, p1Copy, p2Copy);
     }
 
     // Returns true if the player with specified offset has at least one more possible move.
@@ -152,7 +149,7 @@ public class State {
         return heuristicScore;
     }
 
-    public void setHeuristicScore(int heuristicScore) {
-        this.heuristicScore = heuristicScore;
+    public void setHeuristicScore(int offset) {
+        this.heuristicScore = (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
 }

@@ -3,10 +3,9 @@ import java.util.List;
 // Implements the Minimax algorithm with alpha-beta pruning.
 public class Minimax {
     // The maximum depth of the game tree to be constructed.
-    private final int maxDepth = 12;
-
-    private int maxOffset;
-    private int minOffset;
+    private final int maxDepth = 14;
+    private int maxPlayerOffset;
+    private int minPlayerOffset;
 
     // The index of the optimal move the algorithm computes.
     private int selectedField = -1;
@@ -15,33 +14,34 @@ public class Minimax {
     private long initialTime;
 
     public int search(int[] board, int offset, int p1, int p2, long initialTime) {
-        this.maxOffset = offset;
-        this.minOffset = (offset == 0) ? 6 : 0;
+        this.maxPlayerOffset = offset;
+        this.minPlayerOffset = (offset == 0) ? 6 : 0;
         this.initialTime = initialTime;
 
-        State state = new State(board, p1, p2, maxOffset);
+        State rootState = new State(board, p1, p2);
 
-        System.out.println(state);
+//        System.out.println(rootState);
 
-        maxValue(state, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        maxValue(rootState, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
         return this.selectedField;
     }
 
     public int maxValue(State state, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(maxOffset)) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(maxPlayerOffset)) {
             return state.getHeuristicScore();
         }
 
         int max = alpha;
-        List<Integer> possibleMoves = state.getPossibleMoves(maxOffset);
+        List<Integer> possibleMoves = state.getPossibleMoves(maxPlayerOffset);
 
-        for(int i = 0; i < possibleMoves.size(); i++) {
-            State s = state.getNextState(possibleMoves.get(i), maxOffset);
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            State nextState = state.getNextState(possibleMoves.get(i));
+            nextState.setHeuristicScore(maxPlayerOffset);
 
-            System.out.println(s);
+//            System.out.println(s);
 
-            int value = minValue(s,depth - 1, max, beta);
+            int value = minValue(nextState, depth - 1, max, beta);
 
             if (value > max) {
                 max = value;
@@ -60,19 +60,20 @@ public class Minimax {
     }
 
     public int minValue(State state, int depth, int alpha, int beta) {
-        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(minOffset)) {
+        if (System.currentTimeMillis() - initialTime >= 2900 || depth == 0 || !state.hasPossibleMove(minPlayerOffset)) {
             return state.getHeuristicScore();
         }
 
         int min = beta;
-        List<Integer> possibleMoves = state.getPossibleMoves(minOffset);
+        List<Integer> possibleMoves = state.getPossibleMoves(minPlayerOffset);
 
-        for(int i = 0; i < possibleMoves.size(); i++) {
-            State s = state.getNextState(possibleMoves.get(i), maxOffset);
+        for (int i = 0; i < possibleMoves.size(); i++) {
+            State nextState = state.getNextState(possibleMoves.get(i));
+            nextState.setHeuristicScore(maxPlayerOffset);
 
-            System.out.println(s);
+//            System.out.println(s);
 
-            int value = maxValue(s, depth - 1, alpha, min);
+            int value = maxValue(nextState, depth - 1, alpha, min);
 
             if (value < min) {
                 min = value;
