@@ -108,18 +108,18 @@ public class State {
         return str;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof State s) {
-            return Arrays.equals(this.board, s.board) && this.p1 == s.p1 && this.p2 == s.p2;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(this.board) + this.p1 * 2 + this.p2 * 3;
-    }
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj instanceof State s) {
+//            return Arrays.equals(this.board, s.board) && this.p1 == s.p1 && this.p2 == s.p2;
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        return Arrays.hashCode(this.board) + this.p1 * 2 + this.p2 * 3;
+//    }
 
     public int[] getBoard() {
         return board;
