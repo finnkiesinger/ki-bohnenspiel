@@ -10,7 +10,7 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
 //        createGame();
-        joinGame("516");
+        joinGame("715");
     }
 
     static void createGame() throws Exception {
@@ -78,8 +78,8 @@ public class Client {
                     System.out.println(printBoard(board) + "\n");
                 }
                 // calculate fieldID
-                Minimax m = new Minimax();
-                int selectField = m.search(board, offset, p1, p2, System.currentTimeMillis());
+                AlphaBetaAI ai = new AlphaBetaAI();
+                int selectField = ai.getBestMove(board, offset, p1, p2, System.currentTimeMillis());
 
                 board = updateBoard(board, selectField);
                 System.out.println("Wähle Feld: " + (selectField + 1) + " /\t" + p1 + " - " + p2);

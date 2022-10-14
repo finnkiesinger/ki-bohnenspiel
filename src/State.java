@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -20,6 +21,8 @@ public class State {
     // The heuristic value for this state.
     private int heuristicScore;
 
+    private int previousMove;
+
     public State(int[] board, int p1, int p2) {
         this.board = board;
         this.p1 = p1;
@@ -31,6 +34,8 @@ public class State {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
         int p2Copy = this.p2;
+
+        this.previousMove = field;
 
         int numberOfBeans = boardCopy[field];
         boardCopy[field] = 0;
@@ -151,5 +156,13 @@ public class State {
 
     public void setHeuristicScore(int offset) {
         this.heuristicScore = (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
+    }
+
+    public int getPreviousMove() {
+        return previousMove;
+    }
+
+    public void setPreviousMove(int previousMove) {
+        this.previousMove = previousMove;
     }
 }
