@@ -9,8 +9,8 @@ public class Client {
     static int p2 = 0;
 
     public static void main(String[] args) throws Exception {
-        createGame();
-//        joinGame("477");
+//        createGame();
+        joinGame("516");
     }
 
     static void createGame() throws Exception {

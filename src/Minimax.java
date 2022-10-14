@@ -20,8 +20,6 @@ public class Minimax {
 
         State rootState = new State(board, p1, p2);
 
-//        System.out.println(rootState);
-
         maxValue(rootState, maxDepth, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
         return this.selectedField;
@@ -39,7 +37,7 @@ public class Minimax {
             State nextState = state.getNextState(possibleMoves.get(i));
             nextState.setHeuristicScore(maxPlayerOffset);
 
-//            System.out.println(s);
+            System.out.println(nextState + "Depth: " + depth + "\n");
 
             int value = minValue(nextState, depth - 1, max, beta);
 
@@ -71,7 +69,7 @@ public class Minimax {
             State nextState = state.getNextState(possibleMoves.get(i));
             nextState.setHeuristicScore(maxPlayerOffset);
 
-//            System.out.println(s);
+            System.out.println(nextState + "Depth: " + depth + "\n");
 
             int value = maxValue(nextState, depth - 1, alpha, min);
 
