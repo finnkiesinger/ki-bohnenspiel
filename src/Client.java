@@ -10,7 +10,7 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
 //        createGame();
-        joinGame("715");
+        joinGame("1125");
     }
 
     static void createGame() throws Exception {

@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-
 
 // Represents a single state in the game.
 public class State {
@@ -10,18 +8,16 @@ public class State {
      * Represents the 12 pits on the board, each containing a specific number of beans.
      * The first 6 pits belong to player 1, the other 6 to player 2.
      */
-    private int[] board;
+    private final int[] board;
 
     // The number of beans in player 1's treasure trove.
-    private int p1;
+    private final int p1;
 
     // The number of beans in player 2's treasure trove.
-    private int p2;
+    private final int p2;
 
     // The heuristic value for this state.
     private int heuristicScore;
-
-    private int previousMove;
 
     public State(int[] board, int p1, int p2) {
         this.board = board;
@@ -34,8 +30,6 @@ public class State {
         int[] boardCopy = Arrays.copyOf(this.board, 12);
         int p1Copy = this.p1;
         int p2Copy = this.p2;
-
-        this.previousMove = field;
 
         int numberOfBeans = boardCopy[field];
         boardCopy[field] = 0;
@@ -64,7 +58,10 @@ public class State {
         return new State(boardCopy, p1Copy, p2Copy);
     }
 
-    // Returns true if the player with specified offset has at least one more possible move.
+    /*
+     * Checks whether the player with the specified offset can perform at least one more move based on the current state.
+     * Offset 0 = player 1, offset 6 = player 2.
+     */
     public boolean hasPossibleMove(int offset) {
         for (int i = 0; i < 6; i++) {
             if (this.board[i + offset] != 0) {
@@ -76,8 +73,8 @@ public class State {
     }
 
     /*
-     * Returns all possible moves of the player with the specified offset,
-     * meaning the indices of all fields where beans can still be removed from.
+     * Returns all possible moves the player with the specified offset can perform based on the current state.
+     * A move is the index of the field to remove and distribute the beans from.
      */
     public List<Integer> getPossibleMoves(int offset) {
         List<Integer> possibleMoves = new ArrayList<>();
@@ -113,56 +110,15 @@ public class State {
         return str;
     }
 
-//    @Override
-//    public boolean equals(Object obj) {
-//        if (obj instanceof State s) {
-//            return Arrays.equals(this.board, s.board) && this.p1 == s.p1 && this.p2 == s.p2;
-//        }
-//        return false;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Arrays.hashCode(this.board) + this.p1 * 2 + this.p2 * 3;
-//    }
-
-    public int[] getBoard() {
-        return board;
-    }
-
-    public void setBoard(int[] board) {
-        this.board = board;
-    }
-
-    public int getP1() {
-        return p1;
-    }
-
-    public void setP1(int p1) {
-        this.p1 = p1;
-    }
-
-    public int getP2() {
-        return p2;
-    }
-
-    public void setP2(int p2) {
-        this.p2 = p2;
-    }
-
     public int getHeuristicScore() {
         return heuristicScore;
     }
 
-    public void setHeuristicScore(int offset) {
-        this.heuristicScore = (offset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
-    }
-
-    public int getPreviousMove() {
-        return previousMove;
-    }
-
-    public void setPreviousMove(int previousMove) {
-        this.previousMove = previousMove;
+    /*
+     * Sets the heuristic value of this state based on the offset.
+     * The way the score gets calculated depends on whether the max player is player 1 (offset 0) or player 2 (offset 6).
+     */
+    public void setHeuristicScore(int maxPlayerOffset) {
+        this.heuristicScore = (maxPlayerOffset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
 }
