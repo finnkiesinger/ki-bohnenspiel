@@ -119,6 +119,15 @@ public class State {
      * The way the score gets calculated depends on whether the max player is player 1 (offset 0) or player 2 (offset 6).
      */
     public void setHeuristicScore(int maxPlayerOffset) {
-        this.heuristicScore = (maxPlayerOffset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
+        int minPlayerOffset = (maxPlayerOffset == 0) ? 6 : 0;
+        int points = 0;
+
+        for (int i = 0; i < 6; i++) {
+            if (this.board[i + minPlayerOffset] == 0) {
+                points++;
+            }
+        }
+
+        this.heuristicScore = (maxPlayerOffset == 0) ? (this.p1 - this.p2) + points : (this.p2 - this.p1) + points;
     }
 }

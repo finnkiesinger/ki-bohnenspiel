@@ -6,7 +6,7 @@ public class AlphaBetaAI {
     private final int MAX_DEPTH = 12;
 
     // The time limit for the computation of the best move.
-    private final long TIME_LIMIT = 2800;
+    private final long TIME_LIMIT = 2900;
 
     // The offset of the max player. Offset 0 = player 1, offset 6 = player 2.
     private int maxPlayerOffset;
@@ -31,7 +31,7 @@ public class AlphaBetaAI {
 
         int bestMove = -1;
 
-        for (int i = 2; i <= MAX_DEPTH; i += 2) {
+        for (int i = 4; i <= MAX_DEPTH; i += 2) {
             if (isOutOfTime()) {
                 break;
             }
