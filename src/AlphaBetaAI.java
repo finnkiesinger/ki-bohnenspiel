@@ -78,6 +78,7 @@ public class AlphaBetaAI {
                     this.selectedField = possibleMoves.get(i);
                 }
 
+                // Pruning
                 if (max >= beta) {
                     break;
                 }
@@ -106,6 +107,7 @@ public class AlphaBetaAI {
             if (value < min) {
                 min = value;
 
+                // Pruning
                 if (min <= alpha) {
                     break;
                 }

@@ -115,7 +115,7 @@ public class State {
     }
 
     /*
-     * Sets the heuristic value of this state based on the offset.
+     * Sets the heuristic value of this state.
      * The way the score gets calculated depends on whether the max player is player 1 (offset 0) or player 2 (offset 6).
      */
     public void setHeuristicScore(int maxPlayerOffset) {
