@@ -88,28 +88,6 @@ public class State {
         return possibleMoves;
     }
 
-    @Override
-    public String toString() {
-        String str = "";
-
-        for (int i = this.board.length - 1; i >= 6; i--) {
-            str += (i + 1) + ": " + this.board[i] + "  ";
-        }
-
-        str += "\n";
-
-        for (int i = 0; i < 6; i++) {
-            str += (i + 1) + ": " + this.board[i] + "  ";
-        }
-
-        str += "\n";
-        str += "Player 1: " + this.p1 + "\n";
-        str += "Player 2: " + this.p2 + "\n";
-        str += "Heuristic Score: " + this.heuristicScore + "\n";
-
-        return str;
-    }
-
     public int getHeuristicScore() {
         return heuristicScore;
     }
