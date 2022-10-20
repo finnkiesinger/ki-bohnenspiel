@@ -1,22 +1,10 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-// Represents a single state in the game.
 public class State {
-    /*
-     * Represents the 12 pits on the board, each containing a specific number of beans.
-     * The first 6 pits belong to player 1, the other 6 to player 2.
-     */
     private final int[] board;
-
-    // The number of beans in player 1's treasure trove.
     private final int p1;
-
-    // The number of beans in player 2's treasure trove.
     private final int p2;
-
-    // The heuristic value for this state.
     private int heuristicScore;
 
     public State(int[] board, int p1, int p2) {
@@ -25,9 +13,8 @@ public class State {
         this.p2 = p2;
     }
 
-    // Returns a new state which is generated based on the index of the field to remove and distribute all beans from.
     public State getNextState(int field) {
-        int[] boardCopy = Arrays.copyOf(this.board, 12);
+        int[] boardCopy = this.board.clone();
         int p1Copy = this.p1;
         int p2Copy = this.p2;
 
@@ -58,10 +45,6 @@ public class State {
         return new State(boardCopy, p1Copy, p2Copy);
     }
 
-    /*
-     * Checks whether the player with the specified offset can perform at least one more move based on the current state.
-     * Offset 0 = player 1, offset 6 = player 2.
-     */
     public boolean hasPossibleMove(int offset) {
         for (int i = 0; i < 6; i++) {
             if (this.board[i + offset] != 0) {
@@ -72,10 +55,6 @@ public class State {
         return false;
     }
 
-    /*
-     * Returns all possible moves the player with the specified offset can perform based on the current state.
-     * A move is the index of the field to remove and distribute the beans from.
-     */
     public List<Integer> getPossibleMoves(int offset) {
         List<Integer> possibleMoves = new ArrayList<>();
 
@@ -88,46 +67,11 @@ public class State {
         return possibleMoves;
     }
 
-    @Override
-    public String toString() {
-        String str = "";
-
-        for (int i = this.board.length - 1; i >= 6; i--) {
-            str += (i + 1) + ": " + this.board[i] + "  ";
-        }
-
-        str += "\n";
-
-        for (int i = 0; i < 6; i++) {
-            str += (i + 1) + ": " + this.board[i] + "  ";
-        }
-
-        str += "\n";
-        str += "Player 1: " + this.p1 + "\n";
-        str += "Player 2: " + this.p2 + "\n";
-        str += "Heuristic Score: " + this.heuristicScore + "\n";
-
-        return str;
-    }
-
     public int getHeuristicScore() {
         return heuristicScore;
     }
 
-    /*
-     * Sets the heuristic value of this state based on the offset.
-     * The way the score gets calculated depends on whether the max player is player 1 (offset 0) or player 2 (offset 6).
-     */
     public void setHeuristicScore(int maxPlayerOffset) {
-        int minPlayerOffset = (maxPlayerOffset == 0) ? 6 : 0;
-        int points = 0;
-
-        for (int i = 0; i < 6; i++) {
-            if (this.board[i + minPlayerOffset] == 0) {
-                points++;
-            }
-        }
-
-        this.heuristicScore = (maxPlayerOffset == 0) ? (this.p1 - this.p2) + points : (this.p2 - this.p1) + points;
+        this.heuristicScore = (maxPlayerOffset == 0) ? this.p1 - this.p2 : this.p2 - this.p1;
     }
 }

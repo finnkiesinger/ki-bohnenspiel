@@ -4,13 +4,13 @@ import java.net.URI;
 
 public class Client {
     static String server = "http://bohnenspiel.informatik.uni-mannheim.de";
-    static String name = "KI-dney Bohne V2";
+    static String name = "KI-dney Bohnen";
     static int p1 = 0;
     static int p2 = 0;
 
     public static void main(String[] args) throws Exception {
 //        createGame();
-        joinGame("1478");
+        joinGame("1629");
     }
 
     static void createGame() throws Exception {
